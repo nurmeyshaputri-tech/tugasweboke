@@ -1,0 +1,23 @@
+{
+  "/api/analysis/route": "app/api/analysis/route.js",
+  "/api/ranking/route": "app/api/ranking/route.js",
+  "/_not-found/page": "app/_not-found/page.js",
+  "/api/respondents/route": "app/api/respondents/route.js",
+  "/api/reset/route": "app/api/reset/route.js",
+  "/api/survey/route": "app/api/survey/route.js",
+  "/api/assessment/route": "app/api/assessment/route.js",
+  "/api/photoboxes/route": "app/api/photoboxes/route.js",
+  "/login/page": "app/login/page.js",
+  "/survey/page": "app/survey/page.js",
+  "/page": "app/page.js",
+  "/api/top-variables/route": "app/api/top-variables/route.js",
+  "/(dashboard)/ranking/page": "app/(dashboard)/ranking/page.js",
+  "/(dashboard)/assessment/page": "app/(dashboard)/assessment/page.js",
+  "/(dashboard)/top-variables/page": "app/(dashboard)/top-variables/page.js",
+  "/(dashboard)/photoboxes/page": "app/(dashboard)/photoboxes/page.js",
+  "/(dashboard)/questionnaire/page": "app/(dashboard)/questionnaire/page.js",
+  "/(dashboard)/dashboard/page": "app/(dashboard)/dashboard/page.js",
+  "/(dashboard)/questionnaire-data/page": "app/(dashboard)/questionnaire-data/page.js",
+  "/(dashboard)/analysis/page": "app/(dashboard)/analysis/page.js",
+  "/(dashboard)/settings/page": "app/(dashboard)/settings/page.js"
+}
