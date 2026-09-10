@@ -1,8 +1,39 @@
+# Logs
 *.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# Dependencies
+/node_modules
+/.pnp
+.pnp.js
+/vendor
+
+# Next.js build outputs
+/.next/
+/out/
+/.next
+.next
+/build
+/public/build
+
+# Env files
 .DS_Store
 .env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
 .env.backup
 .env.production
+.env.example
+# Keep .env.example for reference, but ignore actual envs - adjust below
+!.env.example
+
+# IDE & OS
 .phpactor.json
 .phpunit.result.cache
 /.fleet
@@ -12,13 +43,24 @@
 /.vscode
 /.zed
 /auth.json
-/node_modules
-/public/build
 /public/hot
 /public/storage
 /storage/*.key
 /storage/pail
-/vendor
 Homestead.json
 Homestead.yaml
 Thumbs.db
+
+# Misc large binaries that shouldn't be in git
+cloudflared.exe
+*.exe
+database.sqlite
+*.sqlite
+*.db
+
+# Vercel
+.vercel
+
+# TypeScript
+*.tsbuildinfo
+next-env.d.ts
