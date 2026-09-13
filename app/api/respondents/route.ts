@@ -4,6 +4,7 @@ import {
   dbGetQuestionnaireEntries,
   dbGetQuestionnaireScores,
   dbDeleteQuestionnaireEntry,
+  friendlyErrorMessage,
 } from '@/lib/db';
 
 export async function GET() {
@@ -19,7 +20,7 @@ export async function GET() {
       scores,
     });
   } catch (error: any) {
-    return NextResponse.json({ success: false, error: error.message }, { status: 500 });
+    return NextResponse.json({ success: false, error: friendlyErrorMessage(error.message) }, { status: 500 });
   }
 }
 
@@ -35,6 +36,6 @@ export async function DELETE(req: Request) {
     await dbDeleteQuestionnaireEntry(id);
     return NextResponse.json({ success: true, message: 'Data responden berhasil dihapus' });
   } catch (error: any) {
-    return NextResponse.json({ success: false, error: error.message }, { status: 500 });
+    return NextResponse.json({ success: false, error: friendlyErrorMessage(error.message) }, { status: 500 });
   }
 }

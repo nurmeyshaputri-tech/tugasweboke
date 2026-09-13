@@ -4,6 +4,7 @@ import {
   dbGetQuestionnaireEntries,
   dbGetQuestionnaireScores,
   dbSaveQuestionnaireEntry,
+  friendlyErrorMessage,
 } from '@/lib/db';
 
 export async function GET() {
@@ -19,7 +20,7 @@ export async function GET() {
       scores,
     });
   } catch (error: any) {
-    return NextResponse.json({ success: false, error: error.message }, { status: 500 });
+    return NextResponse.json({ success: false, error: friendlyErrorMessage(error.message) }, { status: 500 });
   }
 }
 
@@ -49,6 +50,6 @@ export async function POST(req: Request) {
       entry: newEntry,
     });
   } catch (error: any) {
-    return NextResponse.json({ success: false, error: error.message }, { status: 500 });
+    return NextResponse.json({ success: false, error: friendlyErrorMessage(error.message) }, { status: 500 });
   }
 }

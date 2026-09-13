@@ -3,6 +3,7 @@ import {
   dbGetPhotoboxCandidates,
   dbSavePhotoboxCandidate,
   dbDeletePhotoboxCandidate,
+  friendlyErrorMessage,
 } from '@/lib/db';
 
 export async function GET() {
@@ -10,7 +11,7 @@ export async function GET() {
     const candidates = await dbGetPhotoboxCandidates();
     return NextResponse.json({ success: true, candidates });
   } catch (error: any) {
-    return NextResponse.json({ success: false, error: error.message }, { status: 500 });
+    return NextResponse.json({ success: false, error: friendlyErrorMessage(error.message) }, { status: 500 });
   }
 }
 
@@ -41,7 +42,7 @@ export async function POST(req: Request) {
       candidate: saved,
     });
   } catch (error: any) {
-    return NextResponse.json({ success: false, error: error.message }, { status: 500 });
+    return NextResponse.json({ success: false, error: friendlyErrorMessage(error.message) }, { status: 500 });
   }
 }
 
@@ -57,6 +58,6 @@ export async function DELETE(req: Request) {
     await dbDeletePhotoboxCandidate(id);
     return NextResponse.json({ success: true, message: 'Kandidat berhasil dihapus' });
   } catch (error: any) {
-    return NextResponse.json({ success: false, error: error.message }, { status: 500 });
+    return NextResponse.json({ success: false, error: friendlyErrorMessage(error.message) }, { status: 500 });
   }
 }

@@ -3,6 +3,7 @@ import {
   dbGetVariables,
   dbGetQuestionnaireEntries,
   dbGetQuestionnaireScores,
+  friendlyErrorMessage,
 } from '@/lib/db';
 import { calculateVariableAnalysis, computeTop5Weights } from '@/lib/rankingEngine';
 
@@ -22,6 +23,6 @@ export async function GET() {
       top5,
     });
   } catch (error: any) {
-    return NextResponse.json({ success: false, error: error.message }, { status: 500 });
+    return NextResponse.json({ success: false, error: friendlyErrorMessage(error.message) }, { status: 500 });
   }
 }

@@ -3,6 +3,7 @@ import {
   dbGetVariables,
   dbGetQuestionnaireEntries,
   dbGetQuestionnaireScores,
+  friendlyErrorMessage,
 } from '@/lib/db';
 import {
   calculateVariableAnalysis,
@@ -47,6 +48,6 @@ export async function GET() {
       aggregatedBoxes,
     });
   } catch (error: any) {
-    return NextResponse.json({ success: false, error: error.message }, { status: 500 });
+    return NextResponse.json({ success: false, error: friendlyErrorMessage(error.message) }, { status: 500 });
   }
 }

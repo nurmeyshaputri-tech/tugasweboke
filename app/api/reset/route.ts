@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { dbResetAllData } from '@/lib/db';
+import { dbResetAllData, friendlyErrorMessage } from '@/lib/db';
 
 export async function POST() {
   try {
@@ -9,6 +9,6 @@ export async function POST() {
       message: 'Database Supabase berhasil dikosongkan secara total!',
     });
   } catch (error: any) {
-    return NextResponse.json({ success: false, error: error.message }, { status: 500 });
+    return NextResponse.json({ success: false, error: friendlyErrorMessage(error.message) }, { status: 500 });
   }
 }

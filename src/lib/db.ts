@@ -23,6 +23,30 @@ import {
 
 let supabase: SupabaseClient | null = null;
 
+// Ubah pesan error teknis dari Postgres/Supabase menjadi panduan
+// yang mudah dipahami (bahasa Indonesia).
+export function friendlyErrorMessage(message: string): string {
+  if (/does not exist/i.test(message)) {
+    return (
+      'Tabel database belum dibuat. Buka SQL Editor di Supabase, jalankan seluruh isi ' +
+      'supabase/schema.sql (klik Run query), lalu coba lagi.'
+    );
+  }
+  if (/fetch failed|network|ECONNREFUSED|ETIMEDOUT|ENOTFOUND/i.test(message)) {
+    return (
+      'Gagal terhubung ke Supabase. Periksa apakah NEXT_PUBLIC_SUPABASE_URL benar dan ' +
+      'koneksi internet tersedia.'
+    );
+  }
+  if (/invalid api key|JWT/i.test(message)) {
+    return (
+      'API key Supabase tidak valid. Salin ulang anon/public key dari ' +
+      'Settings > API di dashboard Supabase.'
+    );
+  }
+  return message;
+}
+
 export function getSupabaseClient(): SupabaseClient {
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
   const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
