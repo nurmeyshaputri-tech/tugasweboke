@@ -1,14 +1,14 @@
 import { NextResponse } from 'next/server';
-import { dbResetAllData } from '@/lib/sqlite';
+import { dbResetAllData, friendlyErrorMessage } from '@/lib/db';
 
 export async function POST() {
   try {
     await dbResetAllData();
     return NextResponse.json({
       success: true,
-      message: 'Database SQLite berhasil dikosongkan secara total!',
+      message: 'Database Supabase berhasil dikosongkan secara total!',
     });
   } catch (error: any) {
-    return NextResponse.json({ success: false, error: error.message }, { status: 500 });
+    return NextResponse.json({ success: false, error: friendlyErrorMessage(error.message) }, { status: 500 });
   }
 }

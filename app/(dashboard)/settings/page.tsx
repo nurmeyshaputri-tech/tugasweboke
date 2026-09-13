@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Header } from '@/components/layout/Header';
 import { Card } from '@/components/ui/Card';
-import { getAuthUser, clearAllData } from '@/lib/storage';
+import { getAuthUser } from '@/lib/storage';
 import {
   Settings,
   User,
@@ -20,15 +20,26 @@ export default function SettingsPage() {
   const router = useRouter();
   const [user, setUser] = useState<{ email: string; name: string } | null>(null);
   const [resetSuccess, setResetSuccess] = useState<boolean>(false);
+  const [resetError, setResetError] = useState<string>('');
   const [showConfirmReset, setShowConfirmReset] = useState<boolean>(false);
 
   useEffect(() => {
     setUser(getAuthUser() || { email: 'owner@photobox.ai', name: 'Owner / Admin' });
   }, []);
 
-  const handleResetData = () => {
-    clearAllData();
+  const handleResetData = async () => {
     setShowConfirmReset(false);
+    try {
+      const res = await fetch('/api/reset', { method: 'POST' });
+      const data = await res.json();
+      if (!data.success) {
+        setResetError(data.error || 'Gagal mengosongkan database.');
+        return;
+      }
+    } catch {
+      setResetError('Terjadi kendala koneksi saat mengosongkan database.');
+      return;
+    }
     setResetSuccess(true);
     setTimeout(() => {
       setResetSuccess(false);
@@ -46,8 +57,15 @@ export default function SettingsPage() {
       <div className="space-y-6 max-w-4xl">
         {resetSuccess && (
           <div className="p-4 rounded-2xl bg-emerald-50 border border-emerald-200 text-emerald-800 font-bold text-sm flex items-center gap-3">
-            <CheckCircle2 className="w-5 h-5 text-emerald-600" />
+            <CheckCircle2 className="w-5 h-5 text-emerald-600 flex-shrink-0" />
             <span>Database berhasil dikosongkan! Mengalihkan ke Dashboard...</span>
+          </div>
+        )}
+
+        {resetError && (
+          <div className="p-4 rounded-2xl bg-red-50 border border-red-200 text-red-700 font-bold text-sm flex items-center gap-3">
+            <AlertTriangle className="w-5 h-5 text-red-600 flex-shrink-0" />
+            <span>{resetError}</span>
           </div>
         )}
 

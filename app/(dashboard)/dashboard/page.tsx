@@ -162,7 +162,7 @@ export default function DashboardPage() {
               Klasemen Photo Box Terbaik Saat Ini
             </h3>
             <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-purple-100 text-brand-purple">
-              Real-time SQLite
+              Real-time Supabase
             </span>
           </div>
 

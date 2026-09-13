@@ -3,14 +3,15 @@ import {
   dbGetPhotoboxCandidates,
   dbSavePhotoboxCandidate,
   dbDeletePhotoboxCandidate,
-} from '@/lib/sqlite';
+  friendlyErrorMessage,
+} from '@/lib/db';
 
 export async function GET() {
   try {
     const candidates = await dbGetPhotoboxCandidates();
     return NextResponse.json({ success: true, candidates });
   } catch (error: any) {
-    return NextResponse.json({ success: false, error: error.message }, { status: 500 });
+    return NextResponse.json({ success: false, error: friendlyErrorMessage(error.message) }, { status: 500 });
   }
 }
 
@@ -37,11 +38,11 @@ export async function POST(req: Request) {
 
     return NextResponse.json({
       success: true,
-      message: 'Kandidat Photo Box berhasil disimpan ke SQLite!',
+      message: 'Kandidat Photo Box berhasil disimpan ke Supabase!',
       candidate: saved,
     });
   } catch (error: any) {
-    return NextResponse.json({ success: false, error: error.message }, { status: 500 });
+    return NextResponse.json({ success: false, error: friendlyErrorMessage(error.message) }, { status: 500 });
   }
 }
 
@@ -57,6 +58,6 @@ export async function DELETE(req: Request) {
     await dbDeletePhotoboxCandidate(id);
     return NextResponse.json({ success: true, message: 'Kandidat berhasil dihapus' });
   } catch (error: any) {
-    return NextResponse.json({ success: false, error: error.message }, { status: 500 });
+    return NextResponse.json({ success: false, error: friendlyErrorMessage(error.message) }, { status: 500 });
   }
 }
