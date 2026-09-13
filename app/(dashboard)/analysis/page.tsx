@@ -37,7 +37,7 @@ export default function AnalysisPage() {
       {loading ? (
         <div className="p-12 text-center">
           <div className="w-8 h-8 border-4 border-brand-purple border-t-transparent rounded-full animate-spin mx-auto mb-2" />
-          <p className="text-xs text-gray-500">Menganalisis data kuesioner dari SQLite...</p>
+          <p className="text-xs text-gray-500">Menganalisis data kuesioner dari Supabase...</p>
         </div>
       ) : sampleCount === 0 ? (
         <EmptyState

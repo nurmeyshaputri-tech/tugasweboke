@@ -1,11 +1,11 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Header } from '@/components/layout/Header';
 import { Card } from '@/components/ui/Card';
-import { getVariables, saveQuestionnaireEntry } from '@/lib/storage';
 import { LIKERT_OPTIONS } from '@/lib/constants';
+import { Variable } from '@/types/database';
 import {
   ClipboardList,
   CheckCircle2,
@@ -18,13 +18,31 @@ import {
 
 export default function QuestionnairePage() {
   const router = useRouter();
-  const variables = getVariables();
+  const [variables, setVariables] = useState<Variable[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
 
   const [respondentName, setRespondentName] = useState('Owner / Admin');
   const [currentIndex, setCurrentIndex] = useState(0);
   const [scores, setScores] = useState<Record<string, number>>({});
   const [error, setError] = useState('');
   const [success, setSuccess] = useState(false);
+
+  useEffect(() => {
+    fetch('/api/survey')
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.success) {
+          setVariables(data.variables);
+        } else {
+          setError(data.error || 'Gagal memuat daftar variabel dari database.');
+        }
+      })
+      .catch(() => {
+        setError('Gagal terhubung ke database. Periksa konfigurasi Supabase.');
+      })
+      .finally(() => setLoading(false));
+  }, []);
 
   const currentVar = variables[currentIndex];
   const filledCount = Object.keys(scores).filter((k) => scores[k] > 0).length;
@@ -56,7 +74,7 @@ export default function QuestionnairePage() {
     }
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
 
@@ -67,13 +85,49 @@ export default function QuestionnairePage() {
       return;
     }
 
-    saveQuestionnaireEntry(respondentName, scores);
-    setSuccess(true);
-
-    setTimeout(() => {
-      router.push('/questionnaire-data');
-    }, 1500);
+    setSaving(true);
+    try {
+      const res = await fetch('/api/survey', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          respondent_name: respondentName,
+          scores,
+        }),
+      });
+      const data = await res.json();
+      if (data.success) {
+        setSuccess(true);
+        setTimeout(() => {
+          router.push('/questionnaire-data');
+        }, 1500);
+      } else {
+        setError(data.error || 'Gagal menyimpan kuesioner. Coba lagi.');
+      }
+    } catch {
+      setError('Terjadi kendala koneksi saat menyimpan kuesioner.');
+    } finally {
+      setSaving(false);
+    }
   };
+
+  if (loading) {
+    return (
+      <div className="min-h-[60vh] flex flex-col items-center justify-center gap-3">
+        <div className="w-10 h-10 border-4 border-brand-purple border-t-transparent rounded-full animate-spin"></div>
+        <p className="text-sm font-medium text-gray-500">Memuat variabel kuesioner dari Supabase...</p>
+      </div>
+    );
+  }
+
+  if (!currentVar) {
+    return (
+      <div className="p-6 rounded-2xl bg-red-50 border border-red-200 text-red-700 font-semibold text-sm flex items-center gap-3">
+        <AlertCircle className="w-5 h-5 text-red-600" />
+        <span>{error || 'Daftar variabel tidak ditemukan. Jalankan supabase/schema.sql di SQL Editor Supabase.'}</span>
+      </div>
+    );
+  }
 
   return (
     <div>
@@ -200,10 +254,11 @@ export default function QuestionnairePage() {
                 <button
                   type="button"
                   onClick={handleSubmit}
-                  className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-emerald-600 text-white font-extrabold text-sm shadow-lg hover:bg-emerald-700 transition-all transform hover:-translate-y-0.5"
+                  disabled={saving}
+                  className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-emerald-600 text-white font-extrabold text-sm shadow-lg hover:bg-emerald-700 transition-all transform hover:-translate-y-0.5 disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:translate-y-0"
                 >
-                  <Save className="w-4 h-4" />
-                  Simpan Kuesioner
+                  <Save className={`w-4 h-4 ${saving ? 'animate-pulse' : ''}`} />
+                  {saving ? 'Menyimpan...' : 'Simpan Kuesioner'}
                 </button>
               )}
             </div>

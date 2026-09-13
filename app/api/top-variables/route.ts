@@ -5,7 +5,7 @@ import {
   dbGetQuestionnaireScores,
   dbGetSelectedTopVariables,
   dbSaveSelectedTopVariables,
-} from '@/lib/sqlite';
+} from '@/lib/db';
 import { calculateVariableAnalysis, computeTop5Weights } from '@/lib/rankingEngine';
 
 export async function GET() {
@@ -44,7 +44,7 @@ export async function POST(req: Request) {
     const saved = await dbSaveSelectedTopVariables(variable_ids);
     return NextResponse.json({
       success: true,
-      message: 'TOP 5 Variabel berhasil dikonfirmasi ke SQLite!',
+      message: 'TOP 5 Variabel berhasil dikonfirmasi ke Supabase!',
       data: saved,
     });
   } catch (error: any) {

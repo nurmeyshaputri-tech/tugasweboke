@@ -4,7 +4,7 @@ import {
   dbGetQuestionnaireEntries,
   dbGetQuestionnaireScores,
   dbSaveQuestionnaireEntry,
-} from '@/lib/sqlite';
+} from '@/lib/db';
 
 export async function GET() {
   try {
@@ -45,7 +45,7 @@ export async function POST(req: Request) {
 
     return NextResponse.json({
       success: true,
-      message: 'Kuesioner berhasil disimpan ke database SQLite!',
+      message: 'Kuesioner berhasil disimpan ke database Supabase!',
       entry: newEntry,
     });
   } catch (error: any) {

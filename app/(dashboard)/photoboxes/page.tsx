@@ -5,11 +5,6 @@ import Link from 'next/link';
 import { Header } from '@/components/layout/Header';
 import { Card } from '@/components/ui/Card';
 import { EmptyState } from '@/components/ui/EmptyState';
-import {
-  getPhotoboxCandidates,
-  savePhotoboxCandidate,
-  deletePhotoboxCandidate,
-} from '@/lib/storage';
 import { PhotoboxCandidate } from '@/types/database';
 import {
   Camera,
@@ -36,10 +31,19 @@ export default function PhotoboxesPage() {
   const [notes, setNotes] = useState('');
 
   const [deleteTargetId, setDeleteTargetId] = useState<string | null>(null);
+  const [formError, setFormError] = useState('');
+  const [saving, setSaving] = useState(false);
 
-  const reloadCandidates = () => {
-    const list = getPhotoboxCandidates();
-    setCandidates(list);
+  const reloadCandidates = async () => {
+    try {
+      const res = await fetch('/api/photoboxes');
+      const data = await res.json();
+      if (data.success) {
+        setCandidates(data.candidates || []);
+      }
+    } catch {
+      // Data akan tetap kosong bila database belum terhubung
+    }
   };
 
   useEffect(() => {
@@ -66,25 +70,47 @@ export default function PhotoboxesPage() {
     setShowModal(true);
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!name || !location || !price) return;
 
-    savePhotoboxCandidate({
-      id: editingCandidate?.id,
-      name,
-      location,
-      price: parseFloat(price) || 0,
-      description,
-      notes,
-    });
-
-    setShowModal(false);
-    reloadCandidates();
+    setSaving(true);
+    setFormError('');
+    try {
+      const res = await fetch('/api/photoboxes', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          id: editingCandidate?.id,
+          name,
+          location,
+          price: parseFloat(price) || 0,
+          description: description || undefined,
+          notes: notes || undefined,
+        }),
+      });
+      const data = await res.json();
+      if (data.success) {
+        setShowModal(false);
+        reloadCandidates();
+      } else {
+        setFormError(data.error || 'Gagal menyimpan kandidat. Coba lagi.');
+      }
+    } catch {
+      setFormError('Terjadi kendala koneksi saat menyimpan kandidat.');
+    } finally {
+      setSaving(false);
+    }
   };
 
-  const handleDelete = (id: string) => {
-    deletePhotoboxCandidate(id);
+  const handleDelete = async (id: string) => {
+    try {
+      await fetch(`/api/photoboxes?id=${encodeURIComponent(id)}`, {
+        method: 'DELETE',
+      });
+    } catch {
+      // Abaikan error jaringan saat hapus, data dimuat ulang
+    }
     setDeleteTargetId(null);
     reloadCandidates();
   };
@@ -201,6 +227,11 @@ export default function PhotoboxesPage() {
             </div>
 
             <form onSubmit={handleSubmit} className="space-y-4">
+              {formError && (
+                <div className="p-3 rounded-xl bg-red-50 border border-red-200 text-red-700 text-xs font-semibold">
+                  {formError}
+                </div>
+              )}
               <div>
                 <label className="block text-xs font-bold text-gray-700 uppercase mb-1">
                   Nama Photo Box *
@@ -280,9 +311,10 @@ export default function PhotoboxesPage() {
                 </button>
                 <button
                   type="submit"
-                  className="flex-1 py-3 rounded-xl bg-gradient-brand text-white font-extrabold text-xs shadow-glow hover:opacity-95"
+                  disabled={saving}
+                  className="flex-1 py-3 rounded-xl bg-gradient-brand text-white font-extrabold text-xs shadow-glow hover:opacity-95 disabled:opacity-60 disabled:cursor-not-allowed"
                 >
-                  {editingCandidate ? 'Simpan Perubahan' : 'Tambah Candidate'}
+                  {saving ? 'Menyimpan...' : editingCandidate ? 'Simpan Perubahan' : 'Tambah Candidate'}
                 </button>
               </div>
             </form>

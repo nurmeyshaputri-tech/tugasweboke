@@ -4,7 +4,7 @@ import {
   dbGetQuestionnaireEntries,
   dbGetQuestionnaireScores,
   dbDeleteQuestionnaireEntry,
-} from '@/lib/sqlite';
+} from '@/lib/db';
 
 export async function GET() {
   try {

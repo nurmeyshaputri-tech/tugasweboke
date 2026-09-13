@@ -75,7 +75,7 @@ export default function QuestionnaireDataPage() {
     <div>
       <Header
         title="Panel Admin - Data Responden Kuesioner"
-        subtitle={`Daftar responden kuesioner "${SURVEY_TITLE}" tersimpan di SQLite`}
+        subtitle={`Daftar responden kuesioner "${SURVEY_TITLE}" tersimpan di Supabase`}
       />
 
       {/* Share Survey Banner */}
@@ -128,7 +128,7 @@ export default function QuestionnaireDataPage() {
       {loading ? (
         <div className="p-12 text-center">
           <div className="w-8 h-8 border-4 border-brand-purple border-t-transparent rounded-full animate-spin mx-auto mb-2" />
-          <p className="text-xs text-gray-500">Memuat data responden dari SQLite...</p>
+          <p className="text-xs text-gray-500">Memuat data responden dari Supabase...</p>
         </div>
       ) : entries.length === 0 ? (
         <EmptyState
@@ -286,7 +286,7 @@ export default function QuestionnaireDataPage() {
                 Hapus Data Responden?
               </h3>
               <p className="text-xs text-gray-500 mt-2 leading-relaxed">
-                Apakah Anda yakin ingin menghapus data responden ini dari database SQLite?
+                Apakah Anda yakin ingin menghapus data responden ini dari database Supabase?
               </p>
             </div>
             <div className="flex gap-3 pt-2">

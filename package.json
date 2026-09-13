@@ -9,7 +9,6 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@libsql/client": "^0.18.0",
     "@supabase/ssr": "^0.5.1",
     "@supabase/supabase-js": "^2.45.6",
     "clsx": "^2.1.1",

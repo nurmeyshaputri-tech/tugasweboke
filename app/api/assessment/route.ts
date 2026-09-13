@@ -3,7 +3,7 @@ import {
   dbGetVariables,
   dbGetQuestionnaireEntries,
   dbGetQuestionnaireScores,
-} from '@/lib/sqlite';
+} from '@/lib/db';
 import {
   calculateVariableAnalysis,
   computeTop5Weights,

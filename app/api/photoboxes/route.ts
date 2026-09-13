@@ -3,7 +3,7 @@ import {
   dbGetPhotoboxCandidates,
   dbSavePhotoboxCandidate,
   dbDeletePhotoboxCandidate,
-} from '@/lib/sqlite';
+} from '@/lib/db';
 
 export async function GET() {
   try {
@@ -37,7 +37,7 @@ export async function POST(req: Request) {
 
     return NextResponse.json({
       success: true,
-      message: 'Kandidat Photo Box berhasil disimpan ke SQLite!',
+      message: 'Kandidat Photo Box berhasil disimpan ke Supabase!',
       candidate: saved,
     });
   } catch (error: any) {
