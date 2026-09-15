@@ -69,14 +69,32 @@ def add_field(paragraph, instr, font=FONT, size=12, bold=False):
     return run
 
 
+SESUDAH_SHD_PARAGRAF = (
+    "w:tabs", "w:suppressAutoHyphens", "w:kinsoku", "w:wordWrap", "w:overflowPunct",
+    "w:topLinePunct", "w:autoSpaceDE", "w:autoSpaceDN", "w:bidi", "w:adjustRightInd",
+    "w:snapToGrid", "w:spacing", "w:ind", "w:contextualSpacing", "w:mirrorIndents",
+    "w:suppressOverlap", "w:jc", "w:textDirection", "w:textAlignment", "w:textboxTightWrap",
+    "w:outlineLvl", "w:divId", "w:cnfStyle", "w:rPr", "w:sectPr", "w:pPrChange",
+)
+SESUDAH_SHD_SEL = (
+    "w:noWrap", "w:tcMar", "w:textDirection", "w:tcFitText", "w:vAlign", "w:hideMark",
+)
+
+
 def shade(cell_or_paragraph, warna):
+    """Beri warna latar pada sel tabel atau paragraf (posisi elemen dijaga agar valid)."""
     el = cell_or_paragraph._element
-    pr = el.get_or_add_tcPr() if el.tag.endswith("tc") else el.get_or_add_pPr()
+    if el.tag.endswith("tc"):
+        pr = el.get_or_add_tcPr()
+        urutan = SESUDAH_SHD_SEL
+    else:
+        pr = el.get_or_add_pPr()
+        urutan = SESUDAH_SHD_PARAGRAF
     shd = OxmlElement("w:shd")
     shd.set(qn("w:val"), "clear")
     shd.set(qn("w:color"), "auto")
     shd.set(qn("w:fill"), warna)
-    pr.append(shd)
+    pr.insert_element_before(shd, *urutan)
 
 
 def ulangi_header_baris(row):
@@ -87,9 +105,7 @@ def ulangi_header_baris(row):
 
 
 def jangan_pisah_baris(paragraph):
-    p_pr = paragraph._p.get_or_add_pPr()
-    el = OxmlElement("w:keepNext")
-    p_pr.append(el)
+    paragraph.paragraph_format.keep_with_next = True
 
 
 def page_number_type(section, fmt="decimal", start=1):
@@ -97,7 +113,10 @@ def page_number_type(section, fmt="decimal", start=1):
     pg = sect_pr.find(qn("w:pgNumType"))
     if pg is None:
         pg = OxmlElement("w:pgNumType")
-        sect_pr.append(pg)
+        sect_pr.insert_element_before(
+            pg, "w:cols", "w:formProt", "w:vAlign", "w:noEndnote", "w:titlePg",
+            "w:textDirection", "w:bidi", "w:rtlGutter", "w:docGrid", "w:printerSettings",
+            "w:sectPrChange")
     pg.set(qn("w:fmt"), fmt)
     pg.set(qn("w:start"), str(start))
 
@@ -258,9 +277,6 @@ def tabel(doc, header, baris, lebar_kolom=None, size=9.5, judul=None, nomor_labe
     t.style = "Table Grid"
     t.alignment = WD_TABLE_ALIGNMENT.CENTER
     t.autofit = False
-    t_layout = OxmlElement("w:tblLayout")
-    t_layout.set(qn("w:type"), "fixed")
-    t._tbl.tblPr.append(t_layout)
     hdr = t.rows[0]
     for i, teks in enumerate(header):
         cell = hdr.cells[i]
