@@ -29,11 +29,14 @@ U = IN_PER_UNIT          # 1 satuan = 0,551 inci
 # 1. DICK AND CAREY
 # ======================================================================
 def flowchart_dick_carey():
-    H = 9.0
+    """Alur mengikuti urutan pada buku Dick et al. (2015): komponen 8 (evaluasi formatif)
+    berada sebelum komponen 9 (revisi), dan komponen 10 (evaluasi sumatif) dilaksanakan
+    setelah produk digunakan, di luar siklus revisi."""
+    H = 9.6
     fig, ax, H = canvas(H * U)
     ax.text(5, H - 0.24, "FLOWCHART MODEL DICK AND CAREY", ha="center", va="top",
             fontsize=11.8, fontweight="bold", color=DARK)
-    ax.text(5, H - 0.68, "Sepuluh komponen sistem pembelajaran dengan jalur revisi dari evaluasi formatif",
+    ax.text(5, H - 0.68, "Sepuluh komponen sistem pembelajaran dengan jalur revisi dari hasil evaluasi formatif",
             ha="center", va="top", fontsize=7.4, color=SLATE, style="italic")
 
     lx, rx, wcol = 2.90, 7.10, 3.95
@@ -42,15 +45,14 @@ def flowchart_dick_carey():
         panel(ax, lx, cy, wcol, 0.86, tl, fc, ec, fs_max=7.2, fs_min=6.2, tc=ec, tag=f"{tag}L")
         panel(ax, rx, cy, wcol, 0.86, tr, fc, ec, fs_max=7.2, fs_min=6.2, tc=ec, tag=f"{tag}R")
 
-    # 1
-    y1 = H - 1.30
+    y1 = H - 1.28
     panel(ax, 5, y1, 8.9, 0.80,
-          "1. Identifikasi tujuan pembelajaran (instructional goals)\nmenetapkan kompetensi yang harus dikuasai setelah pembelajaran",
+          "1. Identifikasi tujuan pembelajaran (instructional goals)\n"
+          "menetapkan kompetensi yang harus dikuasai setelah pembelajaran",
           BLUE_L, BLUE, fs_max=7.8, fs_min=6.6, tc=BLUE, tag="dc1")
     arrow(ax, (4.25, y1 - 0.40), (3.60, y1 - 0.78), color=SLATE, lw=1.2, mut=10)
     arrow(ax, (5.75, y1 - 0.40), (6.40, y1 - 0.78), color=SLATE, lw=1.2, mut=10)
 
-    # 2 & 3
     y2 = y1 - 1.18
     pair(y2, "2. Analisis pembelajaran\nmemetakan keterampilan dan pengetahuan prasyarat",
          "3. Analisis peserta didik dan konteks\nmengenali karakteristik, kebutuhan, dan lingkungan belajar",
@@ -58,7 +60,6 @@ def flowchart_dick_carey():
     arrow(ax, (lx, y2 - 0.43), (lx, y2 - 0.77), color=SLATE, lw=1.2, mut=10)
     arrow(ax, (rx, y2 - 0.43), (rx, y2 - 0.77), color=SLATE, lw=1.2, mut=10)
 
-    # 4 & 5
     y3 = y2 - 1.20
     pair(y3, "4. Merumuskan tujuan performa\nmengubah tujuan umum menjadi tujuan khusus yang terukur",
          "5. Mengembangkan instrumen penilaian\nmenyusun tes dan kriteria yang selaras dengan tujuan",
@@ -66,30 +67,28 @@ def flowchart_dick_carey():
     arrow(ax, (lx, y3 - 0.43), (lx, y3 - 0.77), color=SLATE, lw=1.2, mut=10)
     arrow(ax, (rx, y3 - 0.43), (rx, y3 - 0.77), color=SLATE, lw=1.2, mut=10)
 
-    # 6 & 7
     y4 = y3 - 1.20
     pair(y4, "6. Mengembangkan strategi pembelajaran\nmemilih pendekatan, metode, media, dan alur penyajian",
-         "7. Mengembangkan bahan ajar\nmemproduksi media dan materi",
+         "7. Mengembangkan bahan ajar\nmemproduksi media dan materi sesuai rancangan",
          GREEN_L, GREEN, "dc6")
     arrow(ax, (lx + wcol / 2, y4), (rx - wcol / 2, y4), color=SLATE, lw=1.2, mut=10)
     arrow(ax, (lx, y4 - 0.43), (lx, y4 - 0.77), color=SLATE, lw=1.2, mut=10)
     arrow(ax, (rx, y4 - 0.43), (rx, y4 - 0.77), color=SLATE, lw=1.2, mut=10)
 
-    # 8 & 10
     y5 = y4 - 1.20
-    pair(y5, "8. Evaluasi formatif\nmenguji draf produk (one-to-one, kelompok kecil, lapangan)",
-         "10. Evaluasi sumatif\nmenilai efektivitas produk akhir setelah implementasi",
-         AMBER_L, AMBER, "dc8")
-    arrow(ax, (lx, y5 - 0.43), (3.30, y5 - 1.02), color=AMBER, lw=1.3, mut=10)
-    arrow(ax, (rx, y5 - 0.43), (6.70, y5 - 1.02), color=AMBER, lw=1.3, mut=10)
+    panel(ax, 5, y5, 8.9, 0.86,
+          "8. Evaluasi formatif\n"
+          "menguji draf produk melalui uji satu-satu, kelompok kecil, dan uji coba lapangan",
+          AMBER_L, AMBER, fs_max=7.8, fs_min=6.6, tc=AMBER, tag="dc8")
+    arrow(ax, (5, y5 - 0.43), (5, y5 - 0.77), color=AMBER, lw=1.3, mut=10)
 
-    # 9 revisi
-    y6 = y5 - 1.44
-    panel(ax, 5, y6, 8.9, 0.80,
-          "9. Melakukan revisi pembelajaran\nmemperbaiki rancangan, bahan ajar, dan strategi berdasarkan temuan evaluasi",
+    y6 = y5 - 1.20
+    panel(ax, 5, y6, 8.9, 0.86,
+          "9. Melakukan revisi pembelajaran\n"
+          "memperbaiki tujuan, strategi, dan bahan ajar berdasarkan temuan evaluasi formatif",
           SLATE_L, SLATE, fs_max=7.8, fs_min=6.6, tc=SLATE, tag="dc9")
 
-    # jalur revisi dari komponen 9 ke komponen 4 dan 7
+    # jalur revisi dari komponen 9 kembali ke komponen 4 dan 7
     ax.plot([0.42, 0.42], [y6, y3], color=SLATE, lw=1.2, linestyle=(0, (4, 3)), zorder=1)
     arrow(ax, (0.42, y3), (lx - wcol / 2 - 0.02, y3), color=SLATE, lw=1.2, ls=(0, (4, 3)), mut=10)
     ax.plot([0.42, 4.20], [y6, y6], color=SLATE, lw=1.2, linestyle=(0, (4, 3)), zorder=1)
@@ -101,9 +100,21 @@ def flowchart_dick_carey():
     ax.text(9.80, (y4 + y6) / 2, "revisi", rotation=90, ha="center", va="center",
             fontsize=6.6, color=SLATE, fontweight="bold")
 
-    autotext(ax, 5, 0.46, 9.4, 0.80,
-             "Catatan: komponen 2 dan 3, 4 dan 5, serta 6 dan 7 dapat dikerjakan secara paralel. Jalur revisi menghubungkan "
-             "temuan evaluasi formatif dengan komponen perancangan dan bahan ajar.",
+    # komponen 10 berada di luar siklus revisi
+    y7 = y6 - 1.24
+    panel(ax, 5, y7, 8.9, 0.82,
+          "10. Evaluasi sumatif\n"
+          "menilai efektivitas, efisiensi, dan daya tarik produk setelah digunakan dalam pembelajaran",
+          AMBER_L, AMBER, fs_max=7.8, fs_min=6.6, tc=AMBER, tag="dc10")
+    arrow(ax, (5, y6 - 0.43), (5, y7 + 0.41), color=SLATE, lw=1.3, ls=(0, (4, 3)), mut=10)
+    ax.text(5.25, (y6 + y7) / 2, "produk hasil revisi digunakan dalam pembelajaran",
+            ha="left", va="center", fontsize=6.2, color=GREY_TXT, fontweight="bold")
+    ax.add_patch(Rectangle((0.62, y7 - 0.37), 8.76, 0.74, facecolor="none", edgecolor=AMBER,
+                           lw=1.0, linestyle=(0, (2, 3)), zorder=0))
+
+    autotext(ax, 5, 0.36, 9.4, 0.68,
+             "Catatan: komponen 2 dan 3, 4 dan 5, serta 6 dan 7 dapat dikerjakan secara paralel. Komponen 9 mengembalikan "
+             "temuan evaluasi formatif ke komponen 4, 6, dan 7, sedangkan komponen 10 dilaksanakan setelah produk digunakan.",
              fs_max=7.0, fs_min=6.4, bold=False, tc=SLATE, tag="dc-note")
     save(fig, "flowchart_dick_carey.png")
 

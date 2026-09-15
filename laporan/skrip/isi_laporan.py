@@ -397,6 +397,13 @@ ADDIE_DIAGRAM = [
     "ke pengembangan ketika ditemukan kesalahan teknis pada media. Branch (2009) menekankan bahwa sifat "
     "berulang (iteratif) inilah yang membuat ADDIE tetap relevan, karena setiap tahap dapat diperbaiki "
     "sebelum produk digunakan secara luas.",
+    "Umpan balik dari tahap evaluasi tidak hanya berhenti pada laporan akhir. Jika hasil evaluasi "
+    "menunjukkan bahwa tujuan pembelajaran belum tercapai karena rumusannya kurang operasional, perbaikan "
+    "diarahkan kembali ke tahap desain. Jika persoalannya terletak pada mutu bahan atau media, perbaikan "
+    "diarahkan ke tahap pengembangan. Bahkan pada kasus tertentu, temuan di lapangan dapat mengubah "
+    "kesimpulan awal mengenai kebutuhan, sehingga perbaikan harus dimulai dari tahap analisis. Karena itu, "
+    "alur ADDIE lebih tepat dibaca sebagai siklus yang dapat berputar kembali, bukan sebagai garis lurus "
+    "yang berakhir di evaluasi (Branch, 2009; Tegeh & Kirna, 2013).",
     "Gambar 2.1 berikut memperlihatkan alur lima tahap ADDIE beserta daur revisi yang menghubungkan tahap "
     "evaluasi dengan tahap-tahap sebelumnya.",
 ]
@@ -622,9 +629,13 @@ DC_TABEL = {
 
 DC_FLOWCHART_TEKS = [
     "Secara ringkas, alur model Dick and Carey dapat digambarkan sebagai berikut. Komponen 2 dan 3, 4 dan "
-    "5, serta 6 dan 7 dapat dikerjakan secara paralel, sedangkan hasil komponen 8 mengalir ke komponen 9 "
-    "untuk merevisi komponen 4, 6, dan 7. Komponen 10 berada di luar siklus utama karena dilaksanakan "
-    "setelah produk selesai dan digunakan. Gambar 2.2 menampilkan alur tersebut secara lengkap.",
+    "5, serta 6 dan 7 dapat dikerjakan secara paralel, sedangkan hasil komponen 8 (evaluasi formatif) "
+    "mengalir ke komponen 9 (revisi) untuk memperbaiki komponen 4, 6, dan 7. Setelah produk hasil revisi "
+    "digunakan dalam pembelajaran, barulah komponen 10 (evaluasi sumatif) dilaksanakan untuk menilai "
+    "efektivitas produk secara keseluruhan. Dengan demikian, komponen 10 berada di luar siklus revisi. "
+    "Alasan penyusunan seperti ini adalah bahwa evaluasi sumatif baru bermakna apabila produk yang dinilai "
+    "sudah melewati perbaikan berdasarkan evaluasi formatif (Dick et al., 2015). Gambar 2.2 menampilkan "
+    "alur tersebut secara lengkap.",
 ]
 
 # ======================================================================
